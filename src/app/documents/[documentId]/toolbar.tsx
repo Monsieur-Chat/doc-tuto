@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon, Redo2Icon, Undo2, Undo2Icon, PrinterIcon, SpellCheck2Icon, BoldIcon, ItalicIcon, UnderlineIcon, MessageSquarePlusIcon, ListTodoIcon, RemoveFormattingIcon, ChevronDown, HighlighterIcon, Link2Icon, ImageIcon, UploadIcon, SearchIcon } from "lucide-react";
+import { LucideIcon, Redo2Icon, Undo2, Undo2Icon, PrinterIcon, SpellCheck2Icon, BoldIcon, ItalicIcon, UnderlineIcon, MessageSquarePlusIcon, ListTodoIcon, RemoveFormattingIcon, ChevronDown, HighlighterIcon, Link2Icon, ImageIcon, UploadIcon, SearchIcon, AlignLeftIcon, AlignCenterIcon, AlignRightIcon, AlignJustifyIcon, ListIcon } from "lucide-react";
 import {cn} from "@/lib/utils"
 import { useEditorStore } from '@/store/use-editor-store';
 import { Separator } from "@/components/ui/separator";
@@ -11,6 +11,58 @@ import { CirclePicker, type ColorResult } from "react-color";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+const ListButton = () => {
+    const { editor } = useEditorStore();
+    const list =[
+        {label : "Bulet List", icon: ListIcon,isActive: () => editor?.isActive("bulletList"), onClick: () => editor?.chain().focus().toggleBulletList().run()},
+        {label : "Order List", icon: ListIcon,isActive: () => editor?.isActive("orderedList"), onClick: () => editor?.chain().focus().toggleOrderedList().run()}
+    ]
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                    <ListIcon className="size-4"/>
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+                {list.map(({label, onClick , isActive, icon : Icon}) => (
+                    <button key={label} className={cn("flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80", isActive() && "bg-neutral-200/80")}  onClick={onClick}>
+                        <span>{label}</span>
+                    </button>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )}
+
+
+const AlignButton = () => {
+    const { editor } = useEditorStore();
+    const alignments = [
+        {label: "Left", value: "left", icons: AlignLeftIcon},
+        {label : "Center", value: "center", icons: AlignCenterIcon},
+        {label : "Right", value: "right", icons: AlignRightIcon},
+        {label : "Justify", value: "justify", icons: AlignJustifyIcon}
+    ]; 
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                    <AlignLeftIcon className="size-4"/>
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+                {alignments.map(({label, value, icons : Icon}) => (
+                    <button key={value} className={cn("flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80", editor?.isActive("align", {value}) && "bg-neutral-200/80")} onClick={() => editor?.chain().focus().setTextAlign(value).run()}>
+                        <Icon className="size-4"/>
+                        <span>{label}</span>
+                    </button>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )}
 
 
 const ImageButton = () => {
@@ -324,9 +376,9 @@ export const Toolbar = () => {
             <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
             <LinkButton />
             <ImageButton/>
+            <AlignButton />
             {/*Todo add more sections*/}
-            {/*Todo add more sections*/}
-            {/*Todo add more sections*/}
+            <ListButton />
             <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
             {sections[2].map((item) => (
                 <ToolbarButton key={item.label} {...item} />
