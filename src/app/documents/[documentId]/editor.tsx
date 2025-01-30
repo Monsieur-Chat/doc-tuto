@@ -18,6 +18,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
 import { FonteSizeExtension } from '@/extensions/fonte-size';
+import { LineHeightExtension } from '@/extensions/line-height';
 
 export const Editor = () => {
     const { setEditor } = useEditorStore();
@@ -65,6 +66,10 @@ export const Editor = () => {
                multicolor: true,
             }),
             TableCell,
+            LineHeightExtension.configure({
+                types: ['paragraph', 'heading'],
+                defaultLineHeight: 'normal',
+            }),
             TableHeader,
             FonteSizeExtension,
             TableRow,

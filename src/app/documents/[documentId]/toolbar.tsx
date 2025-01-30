@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon, Redo2Icon, Undo2, Undo2Icon, PrinterIcon, SpellCheck2Icon, BoldIcon, ItalicIcon, UnderlineIcon, MessageSquarePlusIcon, ListTodoIcon, RemoveFormattingIcon, ChevronDown, HighlighterIcon, Link2Icon, ImageIcon, UploadIcon, SearchIcon, AlignLeftIcon, AlignCenterIcon, AlignRightIcon, AlignJustifyIcon, ListIcon, MinusIcon, PlusIcon } from "lucide-react";
+import { LucideIcon, Redo2Icon, Undo2, Undo2Icon, PrinterIcon, SpellCheck2Icon, BoldIcon, ItalicIcon, UnderlineIcon, MessageSquarePlusIcon, ListTodoIcon, RemoveFormattingIcon, ChevronDown, HighlighterIcon, Link2Icon, ImageIcon, UploadIcon, SearchIcon, AlignLeftIcon, AlignCenterIcon, AlignRightIcon, AlignJustifyIcon, ListIcon, MinusIcon, PlusIcon, ListCollapseIcon } from "lucide-react";
 import {cn} from "@/lib/utils"
 import { useEditorStore } from '@/store/use-editor-store';
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +12,34 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { set } from "date-fns";
+
+
+const LineHeightButton = () => {
+    const { editor } = useEditorStore();
+    const lineHeights = [
+        { label: "Default", value: "normal" },
+        { label: "Single", value: "1" },
+        { label: "1.5", value: "1.5" },
+        { label: "Double", value: "2" },
+    ]; 
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                    <ListCollapseIcon className="size-4"/>
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+                {lineHeights.map(({label, value}) => (
+                    <button key={value} className={cn("flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80", editor?.getAttributes("paragraph").lineHeights === value && "bg-neutral-200/80")} onClick={() => editor?.chain().focus().setLineHeight(value).run()}>
+                        <span>{label}</span>
+                    </button>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )}
+
 
 const FontSizeButton = () => {
     const { editor } = useEditorStore();
@@ -439,7 +467,7 @@ export const Toolbar = () => {
             <LinkButton />
             <ImageButton/>
             <AlignButton />
-            {/*Todo add more sections*/}
+            <LineHeightButton />
             <ListButton />
             <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
             {sections[2].map((item) => (
