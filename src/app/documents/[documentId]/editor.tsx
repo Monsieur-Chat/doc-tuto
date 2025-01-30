@@ -13,6 +13,9 @@ import { useEditorStore } from '@/store/use-editor-store';
 import Underline from '@tiptap/extension-underline'
 import TextStyle from '@tiptap/extension-text-style'
 import FontFamily from '@tiptap/extension-font-family'
+import { Color } from '@tiptap/extension-color'
+import Highlight from '@tiptap/extension-highlight';
+import Link from '@tiptap/extension-link';
 
 export const Editor = () => {
     const { setEditor } = useEditorStore();
@@ -46,7 +49,16 @@ export const Editor = () => {
         },
         extensions: [
             StarterKit,
+            Link.configure({
+                openOnClick: false,
+                autolink: true,
+                defaultProtocol: 'https://',
+            }),
             Table,
+            Color,
+            Highlight.configure({
+               multicolor: true,
+            }),
             TableCell,
             TableHeader,
             TableRow,
