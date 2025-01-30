@@ -16,7 +16,8 @@ import FontFamily from '@tiptap/extension-font-family'
 import { Color } from '@tiptap/extension-color'
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
-import TextAlign from '@tiptap/extension-text-align'
+import TextAlign from '@tiptap/extension-text-align';
+import { FonteSizeExtension } from '@/extensions/fonte-size';
 
 export const Editor = () => {
     const { setEditor } = useEditorStore();
@@ -65,6 +66,7 @@ export const Editor = () => {
             }),
             TableCell,
             TableHeader,
+            FonteSizeExtension,
             TableRow,
             Image,
             ImageResize,
