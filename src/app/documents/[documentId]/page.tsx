@@ -2,6 +2,12 @@ import { DropdownMenuContentProps } from "@radix-ui/react-dropdown-menu";
 import { Editor } from "./editor";
 import { Toolbar } from "./toolbar";
 import { Navbar } from "./navbar";
+import { Inter } from "next/font/google"
+
+const inter = new Inter({
+    subset:["Latin"],
+})
+
 
 interface DocumentIdPageProps{
     params: Promise<{ documentId: string}>;
